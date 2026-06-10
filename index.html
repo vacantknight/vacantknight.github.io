@@ -41,7 +41,23 @@
       border-radius: 5px;
       overflow: hidden;
       background-color: rgb(155, 31, 31);
-      color: white
+      color: white;
+      text-align: left;
+    }
+    .video img {
+      width: 100%;
+      display: block;
+    }
+    .video h3 {
+      margin: 0.75rem 0 0.25rem;
+      font-size: 1rem;
+      padding: 0 0.75rem;
+    }
+    .video p {
+      margin: 0 0 0.75rem;
+      padding: 0 0.75rem;
+      font-size: 0.9rem;
+      line-height: 1.3;
     }
     .video iframe {
       width: 100%;
@@ -125,33 +141,33 @@
         <!-- Static Game Details -->
         <div class="steam-game">
           <h3>Rogue Shapes</h3>
-          <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/3642430/header.jpg" alt="Rogue Shapes" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=Rogue+Shapes';" />
+          <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3642430/201ae5bc6ceed986aabd9c9b8820c8c69ce2dc60/capsule_616x353.jpg?t=1751883947" alt="Rogue Shapes" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=Rogue+Shapes';" />
           <p>Rogue Shapes is a fast-paced roguelike bullet hell where you battle waves of deadly shapes, level up, and choose powerful upgrades. Complete challenges to unlock new playable shapes, each with unique weapons. How long can you survive the chaos?</p>
-          <a href="https://store.steampowered.com/app/3642430/Rogue_Shapes/" target="_blank">View on Steam</a>
+          <a href="https://store.steampowered.com/app/3642430/" target="_blank">View on Steam</a>
         </div>
         <div class="steam-game">
           <h3>Heart Clicker</h3>
-          <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/3022740/header.jpg" alt="Heart Clicker" />
+          <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3022740/capsule_616x353.jpg?t=1719179669" alt="Heart Clicker" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=Heart+Clicker';" />
           <p>Heart Clicker is a free-to-play clicker/idle game where you start with nothing and build your way up to a vast collection of hearts! Click to generate hearts, invest them in powerful upgrades, and watch your heart count soar.</p>
           <a href="https://store.steampowered.com/app/3022740/" target="_blank">View on Steam</a>
         </div>
         <div class="steam-game">
           <h3>Project Hybrid</h3>
-          <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2621790/header.jpg" alt="Project Hybrid" />
+          <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2621790/capsule_616x353.jpg?t=1707499349" alt="Project Hybrid" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=Project+Hybrid';" />
           <p>In Project Hybrid, you'll find yourself ensnared, desperately seeking an escape while unraveling the enigma of your surroundings and the mysterious circumstances that brought you here.</p>
           <a href="https://store.steampowered.com/app/2621790/" target="_blank">View on Steam</a>
         </div>
         <div class="steam-game">
           <h3>Lofi Ball</h3>
-          <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2009850/header.jpg" alt="Lofi Ball" />
+          <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2009850/capsule_616x353.jpg?t=1727911682" alt="Lofi Ball" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=Lofi+Ball';" />
           <p>Lofi Ball Is A 3D Platforming Game, Inspired By Super Monkey Ball And Ball Race, Dodge Obstacles And Smash Through Walls To Get To The End Of Each Level And Find Multiple Ways To Complete Levels, Has Endless Mode And Infinite Levels</p>
           <a href="https://store.steampowered.com/app/2009850/" target="_blank">View on Steam</a>
         </div>
         <div class="steam-game">
           <h3>Heart Idler</h3>
-          <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/3688630/header.jpg" alt="Heart Idler" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=Heart+Idler';" />
+          <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3688630/9503a95a122e64b989abb6c45c70eb337a4151d7/capsule_616x353.jpg?t=1771330639" alt="Heart Idler" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=Heart+Idler';" />
           <p>Heart Idler is a relaxing incremental game where you build up your heart empire with satisfying upgrades and idle progression. Keep growing your collection of hearts while unlocking powerful boosts and automated systems.</p>
-          <a href="https://store.steampowered.com/app/3688630/Heart_Idler/" target="_blank">View on Steam</a>
+          <a href="https://store.steampowered.com/app/3688630/" target="_blank">View on Steam</a>
         </div>
       </div>
     </div>
@@ -216,43 +232,88 @@
     const videoContainer = document.getElementById('video-container');
   
     // Variable to control the number of videos to display
-    const NUMBER_OF_VIDEOS = 15; // Change this value to display a different number of videos
+    const NUMBER_OF_VIDEOS = 9; // Change this value to display a different number of videos
   
     async function fetchVideos() {
       try {
-        const MAX_FETCH = 40; // Fetch more videos to ensure enough long-form videos
-        const response = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${MAX_FETCH}`);
-        const data = await response.json();
-    
-        // Extract video IDs
-        const videoIds = data.items
-          .filter(item => item.id.kind === 'youtube#video') // Ensure it's a video
-          .map(item => item.id.videoId);
-    
-        // Fetch video details (including duration)
+        const uploadsResponse = await fetch(`https://www.googleapis.com/youtube/v3/channels?key=${API_KEY}&id=${CHANNEL_ID}&part=contentDetails`);
+        const uploadsData = await uploadsResponse.json();
+        const uploadsPlaylistId = uploadsData.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
+
+        if (!uploadsPlaylistId) {
+          videoContainer.innerHTML = '<p>Unable to find the channel upload playlist.</p>';
+          return;
+        }
+
+        const playlistResponse = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?key=${API_KEY}&playlistId=${uploadsPlaylistId}&part=snippet&maxResults=50`);
+        const playlistData = await playlistResponse.json();
+        const playlistItems = playlistData.items || [];
+
+        const videoIds = playlistItems
+          .filter(item => item.snippet?.resourceId?.kind === 'youtube#video')
+          .map(item => item.snippet.resourceId.videoId)
+          .filter(Boolean);
+
+        if (!videoIds.length) {
+          videoContainer.innerHTML = '<p>No videos available right now.</p>';
+          return;
+        }
+
         const videoDetailsResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?key=${API_KEY}&id=${videoIds.join(',')}&part=contentDetails,snippet`);
         const videoDetailsData = await videoDetailsResponse.json();
-    
+
         videoContainer.innerHTML = ''; // Clear previous videos
-    
-        // Filter videos by duration (between 3:30 and 1 hour)
-        const filteredVideos = videoDetailsData.items.filter(video => {
-          const duration = parseISO8601Duration(video.contentDetails.duration);
-          return duration >= 210 && duration <= 3600; // Only include videos between 3:30 and 1 hour
+
+        const videoMap = {};
+        videoDetailsData.items.forEach(video => {
+          videoMap[video.id] = video;
         });
-    
-        // Display only the desired number of videos
-        filteredVideos.slice(0, NUMBER_OF_VIDEOS).forEach(video => {
+
+        const orderedVideos = videoIds
+          .map(id => videoMap[id])
+          .filter(Boolean)
+          .filter(video => {
+            const duration = parseISO8601Duration(video.contentDetails.duration);
+            const text = `${video.snippet.title} ${video.snippet.description}`.toLowerCase();
+            const isLiveArchive = /\b(live|livestream|stream|streams|replay|premiere)\b/.test(text);
+            return duration > 180 && !isLiveArchive;
+          });
+
+        if (!orderedVideos.length) {
+          videoContainer.innerHTML = '<p>No long-form videos found yet.</p>';
+          return;
+        }
+
+        orderedVideos.slice(0, NUMBER_OF_VIDEOS).forEach(video => {
+          const thumbnail = video.snippet.thumbnails.maxres?.url || video.snippet.thumbnails.high?.url || video.snippet.thumbnails.medium?.url || video.snippet.thumbnails.default?.url || 'https://via.placeholder.com/300x150?text=No+Thumbnail';
           const videoElement = document.createElement('div');
           videoElement.classList.add('video');
-          videoElement.innerHTML = `
-            <iframe src="https://www.youtube.com/embed/${video.id}" frameborder="0" allowfullscreen></iframe>
-            <h3>${video.snippet.title}</h3>
-          `;
+
+          const link = document.createElement('a');
+          link.href = `https://www.youtube.com/watch?v=${video.id}`;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+
+          const img = document.createElement('img');
+          img.src = thumbnail;
+          img.alt = video.snippet.title || 'YouTube video thumbnail';
+          img.onerror = () => img.src = 'https://via.placeholder.com/300x150?text=No+Thumbnail';
+          link.appendChild(img);
+
+          const title = document.createElement('h3');
+          title.textContent = video.snippet.title;
+
+          const date = document.createElement('p');
+          date.textContent = new Date(video.snippet.publishedAt).toLocaleDateString();
+
+          videoElement.appendChild(link);
+          videoElement.appendChild(title);
+          videoElement.appendChild(date);
           videoContainer.appendChild(videoElement);
         });
       } catch (error) {
         console.error('Error fetching videos:', error);
+        videoContainer.innerHTML = '<p>Unable to load videos right now.</p>';
       }
     }
   
